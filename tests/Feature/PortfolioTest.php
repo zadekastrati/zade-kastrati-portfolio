@@ -43,6 +43,45 @@ class PortfolioTest extends TestCase
         $this->assertSame(0, ContactMessage::count());
     }
 
+    /**
+     * @return array<string, array{string}>
+     */
+    public static function invalidEmails(): array
+    {
+        return [
+            'no at sign' => ['abc'],
+            'no domain ending' => ['test@test'],
+            'missing .com' => ['zade@gmail'],
+            'one-letter ending' => ['a@b.c'],
+            'double at' => ['user@@x.com'],
+            'double dot' => ['x@y..com'],
+            'contains space' => ['a b@gmail.com'],
+        ];
+    }
+
+    #[\PHPUnit\Framework\Attributes\DataProvider('invalidEmails')]
+    public function test_invalid_email_is_rejected(string $email): void
+    {
+        $this->postJson('/contact', [
+            'name' => 'Visitor',
+            'email' => $email,
+            'message' => 'Hello there, this is a test.',
+        ])->assertUnprocessable()->assertJsonValidationErrors(['email']);
+
+        $this->assertSame(0, ContactMessage::count());
+    }
+
+    public function test_real_world_email_formats_are_accepted(): void
+    {
+        foreach (['first.last@company.co.uk', 'zade.kastrati+jobs@gmail.com'] as $email) {
+            $this->postJson('/contact', [
+                'name' => 'Visitor',
+                'email' => $email,
+                'message' => 'Hello there, this is a test.',
+            ])->assertCreated();
+        }
+    }
+
     public function test_honeypot_rejects_bots(): void
     {
         $this->postJson('/contact', [

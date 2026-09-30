@@ -6,6 +6,19 @@ import { Button, Reveal, SectionHeading } from './ui';
 
 const empty = { name: '', email: '', subject: '', message: '', website: '' };
 
+// Mirrors the server rule in StoreContactMessageRequest, for instant feedback.
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i;
+
+function validate(form) {
+    const errors = {};
+    if (!form.name.trim()) errors.name = 'Please enter your name.';
+    if (!form.email.trim()) errors.email = 'Please enter your email address.';
+    else if (!EMAIL_PATTERN.test(form.email.trim())) errors.email = 'Please enter a valid email address, like name@example.com.';
+    if (!form.message.trim()) errors.message = 'Please write a message.';
+    else if (form.message.trim().length < 10) errors.message = 'Your message should be at least 10 characters long.';
+    return errors;
+}
+
 function Field({ label, error, as = 'input', ...props }) {
     const Component = as;
     return (
@@ -31,7 +44,18 @@ export default function Contact({ profile }) {
     const [serverMessage, setServerMessage] = useState('');
     const [copied, setCopied] = useState(false);
 
-    const update = (key) => (e) => setForm((f) => ({ ...f, [key]: e.target.value }));
+    const update = (key) => (e) => {
+        setForm((f) => ({ ...f, [key]: e.target.value }));
+        // Clear a field's error as soon as the visitor starts fixing it
+        if (errors[key]) setErrors(({ [key]: _, ...rest }) => rest);
+    };
+
+    // Check a field when the visitor leaves it (only once they've typed something)
+    const check = (key) => () => {
+        if (!form[key].trim()) return;
+        const message = validate(form)[key];
+        if (message) setErrors((e) => ({ ...e, [key]: message }));
+    };
 
     const copyEmail = async () => {
         try {
@@ -45,6 +69,13 @@ export default function Contact({ profile }) {
 
     const submit = async (e) => {
         e.preventDefault();
+
+        const clientErrors = validate(form);
+        if (Object.keys(clientErrors).length) {
+            setErrors(clientErrors);
+            return;
+        }
+
         setStatus('sending');
         setErrors({});
 
@@ -191,6 +222,7 @@ export default function Contact({ profile }) {
                                                 type="email"
                                                 value={form.email}
                                                 onChange={update('email')}
+                                                onBlur={check('email')}
                                                 error={errors.email}
                                                 placeholder="jane@company.com"
                                                 autoComplete="email"
@@ -203,6 +235,7 @@ export default function Contact({ profile }) {
                                             label="Message"
                                             value={form.message}
                                             onChange={update('message')}
+                                            onBlur={check('message')}
                                             error={errors.message}
                                             placeholder="Please describe your inquiry"
                                             required
