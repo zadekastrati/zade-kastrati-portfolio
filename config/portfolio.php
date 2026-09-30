@@ -89,7 +89,7 @@ return [
         [
             'role' => 'IT Trainer',
             'company' => 'Probit Academy',
-            'url' => null,
+            'url' => 'http://probitschool.com/',
             'period' => '01/2025 – 11/2025',
             'location' => 'Prishtina, Kosovo',
             'current' => false,
