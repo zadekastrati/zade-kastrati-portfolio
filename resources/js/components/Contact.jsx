@@ -1,4 +1,4 @@
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, m } from 'framer-motion';
 import { Check, CheckCircle2, Copy, Loader2, Mail, MapPin, Phone, Send } from 'lucide-react';
 import { useState } from 'react';
 import { GithubIcon, LinkedinIcon } from '../lib/icons';
@@ -192,29 +192,29 @@ export default function Contact({ profile }) {
                         <div className="glass relative overflow-hidden rounded-3xl p-7 sm:p-9">
                             <AnimatePresence mode="wait">
                                 {status === 'sent' ? (
-                                    <motion.div
+                                    <m.div
                                         key="sent"
                                         initial={{ opacity: 0, scale: 0.95 }}
                                         animate={{ opacity: 1, scale: 1 }}
                                         exit={{ opacity: 0 }}
                                         className="flex min-h-104 flex-col items-center justify-center text-center"
                                     >
-                                        <motion.span
+                                        <m.span
                                             initial={{ scale: 0, rotate: -45 }}
                                             animate={{ scale: 1, rotate: 0 }}
                                             transition={{ type: 'spring', stiffness: 260, damping: 16, delay: 0.1 }}
                                             className="mb-6 grid size-20 place-items-center rounded-full bg-emerald-500/15 text-emerald-600"
                                         >
                                             <CheckCircle2 className="size-10" />
-                                        </motion.span>
+                                        </m.span>
                                         <h3 className="text-2xl font-semibold">Message sent</h3>
                                         <p className="mt-2 text-ink-600">{serverMessage} I will respond as soon as possible.</p>
                                         <button onClick={() => setStatus('idle')} className="mt-8 text-sm text-accent hover:text-accent">
                                             Send another message
                                         </button>
-                                    </motion.div>
+                                    </m.div>
                                 ) : (
-                                    <motion.form key="form" onSubmit={submit} exit={{ opacity: 0 }} className="space-y-5" noValidate>
+                                    <m.form key="form" onSubmit={submit} exit={{ opacity: 0 }} className="space-y-5" noValidate>
                                         <div className="grid gap-5 sm:grid-cols-2">
                                             <Field label="Name" value={form.name} onChange={update('name')} error={errors.name} placeholder="Jane Doe" autoComplete="name" required />
                                             <Field
@@ -267,7 +267,7 @@ export default function Contact({ profile }) {
                                                 </>
                                             )}
                                         </Button>
-                                    </motion.form>
+                                    </m.form>
                                 )}
                             </AnimatePresence>
                         </div>

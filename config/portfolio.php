@@ -22,7 +22,7 @@ return [
         'location' => 'Prishtina, Kosovo',
         'email' => 'kastratizade9@gmail.com',
         'phone' => '+383 49 182 367',
-        'photo' => '/images/zade.jpg',
+        'photo' => '/images/zade-192.webp',
         'core_stack' => ['Laravel', 'React', 'Node.js', 'PHP', 'MySQL', 'Tailwind CSS'],
         'available' => true,
         'socials' => [
@@ -44,13 +44,13 @@ return [
         'description' => 'boné is a women\'s activewear brand that serves customers in Kosovo, Albania and North Macedonia. As lead developer, I built the platform and was responsible for most of its implementation, including the storefront, checkout, payment integration, administrative back office and deployment. The platform processes live customer orders, so security, reliability and a consistent experience on mobile and desktop were core requirements throughout development.',
         'url' => 'https://bone-active.com',
         'repo' => 'https://github.com/zadekastrati/bone',
-        'logo' => '/images/bone/logo.png',
+        'logo' => '/images/bone/logo-176.webp',
         'images' => [
-            ['src' => '/images/bone/leggings.jpeg', 'label' => 'Leggings'],
-            ['src' => '/images/bone/sports-bras.jpeg', 'label' => 'Sports Bras'],
-            ['src' => '/images/bone/tops-tanks.jpeg', 'label' => 'Tops & Tanks'],
-            ['src' => '/images/bone/bodysuits.jpeg', 'label' => 'Bodysuits'],
-            ['src' => '/images/bone/shorts-and-skirts.jpeg', 'label' => 'Shorts & Skirts'],
+            ['src' => '/images/bone/leggings-960.webp', 'thumb' => '/images/bone/leggings-480.webp', 'mini' => '/images/bone/leggings-192.webp', 'label' => 'Leggings'],
+            ['src' => '/images/bone/sports-bras-960.webp', 'thumb' => '/images/bone/sports-bras-480.webp', 'mini' => '/images/bone/sports-bras-192.webp', 'label' => 'Sports Bras'],
+            ['src' => '/images/bone/tops-tanks-960.webp', 'thumb' => '/images/bone/tops-tanks-480.webp', 'mini' => '/images/bone/tops-tanks-192.webp', 'label' => 'Tops & Tanks'],
+            ['src' => '/images/bone/bodysuits-960.webp', 'thumb' => '/images/bone/bodysuits-480.webp', 'mini' => '/images/bone/bodysuits-192.webp', 'label' => 'Bodysuits'],
+            ['src' => '/images/bone/shorts-and-skirts-960.webp', 'thumb' => '/images/bone/shorts-and-skirts-480.webp', 'mini' => '/images/bone/shorts-and-skirts-192.webp', 'label' => 'Shorts & Skirts'],
         ],
         'highlights' => [
             ['icon' => 'credit-card', 'title' => 'Secure Payment Processing', 'text' => 'Integration with the Quipu payment gateway. Each transaction is verified directly with the gateway on the server, and gateway callbacks are never accepted as proof of payment. Cash on delivery is also supported.'],

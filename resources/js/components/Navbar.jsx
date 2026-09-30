@@ -1,4 +1,4 @@
-import { AnimatePresence, motion, useScroll, useSpring } from 'framer-motion';
+import { AnimatePresence, m, useScroll, useSpring } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { ease } from './ui';
@@ -46,11 +46,11 @@ export default function Navbar({ name, photo }) {
 
     return (
         <>
-            <motion.div
+            <m.div
                 style={{ scaleX: progress }}
                 className="fixed inset-x-0 top-0 z-50 h-0.5 origin-left bg-accent"
             />
-            <motion.header
+            <m.header
                 initial={{ y: -80, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 0.8, ease, delay: 0.2 }}
@@ -65,6 +65,8 @@ export default function Navbar({ name, photo }) {
                         {photoOk ? (
                             <img
                                 src={photo}
+                                width="36"
+                                height="36"
                                 alt=""
                                 onError={() => setPhotoOk(false)}
                                 className="size-9 rounded-full object-cover object-top ring-2 ring-accent/30 transition group-hover:ring-accent"
@@ -86,13 +88,11 @@ export default function Navbar({ name, photo }) {
                                         active === link.id ? 'text-ink-900' : 'text-ink-600 hover:text-ink-900'
                                     }`}
                                 >
-                                    {active === link.id && (
-                                        <motion.span
-                                            layoutId="nav-pill"
-                                            className="absolute inset-0 rounded-full bg-black/8"
-                                            transition={{ type: 'spring', stiffness: 380, damping: 32 }}
-                                        />
-                                    )}
+                                    <span
+                                        className={`absolute inset-0 rounded-full bg-black/8 transition-all duration-300 ${
+                                            active === link.id ? 'scale-100 opacity-100' : 'scale-90 opacity-0'
+                                        }`}
+                                    />
                                     <span className="relative">{link.label}</span>
                                 </a>
                             </li>
@@ -114,11 +114,11 @@ export default function Navbar({ name, photo }) {
                         <Menu className="size-5" />
                     </button>
                 </nav>
-            </motion.header>
+            </m.header>
 
             <AnimatePresence>
                 {open && (
-                    <motion.div
+                    <m.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
@@ -133,7 +133,7 @@ export default function Navbar({ name, photo }) {
                         </button>
                         <ul className="flex h-full flex-col items-center justify-center gap-3">
                             {links.map((link, i) => (
-                                <motion.li
+                                <m.li
                                     key={link.id}
                                     initial={{ opacity: 0, y: 24 }}
                                     animate={{ opacity: 1, y: 0 }}
@@ -146,10 +146,10 @@ export default function Navbar({ name, photo }) {
                                     >
                                         {link.label}
                                     </a>
-                                </motion.li>
+                                </m.li>
                             ))}
                         </ul>
-                    </motion.div>
+                    </m.div>
                 )}
             </AnimatePresence>
         </>

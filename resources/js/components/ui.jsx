@@ -1,16 +1,16 @@
-import { animate, motion, useInView, useMotionValue, useSpring, useTransform } from 'framer-motion';
+import { animate, m, useInView, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
 
 export const ease = [0.22, 1, 0.36, 1];
 
 /** Fades and lifts its children into view once, when scrolled to. */
 export function Reveal({ children, delay = 0, y = 28, className = '', as = 'div' }) {
-    const Component = motion[as];
+    const Component = m[as];
     return (
         <Component
             className={className}
-            initial={{ opacity: 0, y, filter: 'blur(6px)' }}
-            whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+            initial={{ opacity: 0, y }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-80px' }}
             transition={{ duration: 0.8, delay, ease }}
         >
@@ -85,9 +85,9 @@ export function Magnetic({ children, strength = 0.3, className = '' }) {
     };
 
     return (
-        <motion.div ref={ref} style={{ x, y }} onMouseMove={onMove} onMouseLeave={reset} className={`inline-block ${className}`}>
+        <m.div ref={ref} style={{ x, y }} onMouseMove={onMove} onMouseLeave={reset} className={`inline-block ${className}`}>
             {children}
-        </motion.div>
+        </m.div>
     );
 }
 
@@ -133,7 +133,7 @@ export function SpotlightCard({ children, className = '', tilt = true, tone = 'l
     };
 
     return (
-        <motion.div
+        <m.div
             ref={ref}
             onMouseMove={onMove}
             onMouseLeave={onLeave}
@@ -141,7 +141,7 @@ export function SpotlightCard({ children, className = '', tilt = true, tone = 'l
             className={`group relative rounded-3xl ${className}`}
         >
             {/* Gradient border revealed under the cursor */}
-            <motion.div
+            <m.div
                 aria-hidden
                 style={{ background: border }}
                 className="pointer-events-none absolute -inset-px rounded-3xl opacity-0 transition-opacity duration-300 group-hover:opacity-100"
@@ -152,10 +152,10 @@ export function SpotlightCard({ children, className = '', tilt = true, tone = 'l
                     onColor ? 'border-white/10 bg-[#25262b]' : 'border-black/7 bg-surface'
                 }`}
             >
-                <motion.div aria-hidden style={{ background }} className="pointer-events-none absolute inset-0" />
+                <m.div aria-hidden style={{ background }} className="pointer-events-none absolute inset-0" />
                 <div className="relative h-full">{children}</div>
             </div>
-        </motion.div>
+        </m.div>
     );
 }
 

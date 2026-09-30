@@ -1,4 +1,4 @@
-import { motion, useScroll, useSpring } from 'framer-motion';
+import { m, useScroll, useSpring } from 'framer-motion';
 import { ArrowUpRight, Briefcase, Check } from 'lucide-react';
 import { useRef } from 'react';
 import { Reveal, SectionHeading, SpotlightCard, Tag } from './ui';
@@ -25,7 +25,7 @@ export default function Experience({ items }) {
                 <div ref={ref} className="relative">
                     {/* Timeline rail, drawn as you scroll */}
                     <div className="absolute top-0 bottom-0 left-4.75 w-px bg-black/6 md:left-6.75" />
-                    <motion.div
+                    <m.div
                         style={{ scaleY: lineScale }}
                         className="absolute top-0 bottom-0 left-4.75 w-px origin-top bg-accent md:left-6.75"
                     />

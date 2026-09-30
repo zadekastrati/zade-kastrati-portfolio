@@ -1,4 +1,4 @@
-import { AnimatePresence, motion, useScroll, useTransform } from 'framer-motion';
+import { AnimatePresence, m, useScroll, useTransform } from 'framer-motion';
 import { ArrowUpRight, Bug, GraduationCap, Layers } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { GithubIcon, LinkedinIcon } from '../lib/icons';
@@ -21,34 +21,36 @@ function RotatingRole({ roles }) {
         <span className="relative inline-grid overflow-hidden align-bottom">
             <span className="invisible col-start-1 row-start-1 whitespace-nowrap">{longest}</span>
             <AnimatePresence initial={false}>
-                <motion.span
+                <m.span
                     key={roles[index]}
-                    initial={{ y: '70%', opacity: 0, filter: 'blur(4px)' }}
-                    animate={{ y: 0, opacity: 1, filter: 'blur(0px)' }}
-                    exit={{ y: '-70%', opacity: 0, filter: 'blur(4px)' }}
+                    initial={{ y: '70%', opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    exit={{ y: '-70%', opacity: 0 }}
                     transition={{ duration: 0.6, ease }}
                     className="col-start-1 row-start-1 whitespace-nowrap text-accent"
                 >
                     {roles[index]}
-                </motion.span>
+                </m.span>
             </AnimatePresence>
         </span>
     );
 }
 
+// Letters rise into place but are visible from the first frame (no mask, no opacity),
+// so the heading counts as painted immediately for Largest Contentful Paint.
 function SplitWord({ text, delay = 0 }) {
     return (
-        <span className="inline-block overflow-hidden pb-2 align-bottom">
+        <span className="inline-block pb-2 align-bottom">
             {text.split('').map((char, i) => (
-                <motion.span
+                <m.span
                     key={i}
                     className="inline-block"
-                    initial={{ y: '105%' }}
+                    initial={{ y: '0.3em' }}
                     animate={{ y: 0 }}
                     transition={{ duration: 0.9, ease, delay: delay + i * 0.035 }}
                 >
                     {char}
-                </motion.span>
+                </m.span>
             ))}
         </span>
     );
@@ -61,7 +63,7 @@ const tileMotion = {
 
 /** One bento tile: staggers in with its siblings and lifts slightly on hover. */
 function Tile({ className = '', children, as = 'div', ...props }) {
-    const Component = motion[as];
+    const Component = m[as];
     return (
         <Component
             variants={tileMotion}
@@ -90,7 +92,7 @@ function Bento({ profile, featured, job, degree }) {
             <div className="animate-drift absolute -inset-10 rounded-[3rem] bg-[radial-gradient(circle_at_30%_30%,rgba(162,136,166,0.35),transparent_60%)] blur-3xl" />
             <div className="animate-drift-reverse absolute -inset-10 rounded-[3rem] bg-[radial-gradient(circle_at_75%_75%,rgba(210,165,168,0.3),transparent_60%)] blur-3xl" />
 
-            <motion.div
+            <m.div
                 initial="hidden"
                 animate="show"
                 variants={{ show: { transition: { staggerChildren: 0.09, delayChildren: 0.4 } } }}
@@ -129,10 +131,18 @@ function Bento({ profile, featured, job, degree }) {
 
                 {/* boné, live */}
                 <Tile as="a" href="#featured" className="group order-4 col-span-2 flex items-center sm:order-3 sm:col-span-5 gap-5 bg-panel p-3 pr-6 text-white">
-                    <img src={photo.src} alt="" className="size-24 shrink-0 rounded-2xl object-cover object-[center_30%]" />
+                    <img
+                        src={photo.mini}
+                        srcSet={`${photo.mini} 192w, ${photo.thumb} 480w`}
+                        sizes="96px"
+                        alt=""
+                        width="96"
+                        height="96"
+                        className="size-24 shrink-0 rounded-2xl object-cover object-[center_30%]"
+                    />
                     <div className="min-w-0 flex-1">
                         <span className="inline-block rounded-md bg-white px-2 py-1">
-                            <img src={featured.logo} alt="boné" className="h-3.5" />
+                            <img src={featured.logo} alt="boné" width="38" height="14" className="h-3.5 w-auto" />
                         </span>
                         <p className="mt-2.5 text-sm font-medium">Live e-commerce platform · Lead developer</p>
                         <p className="mt-1 flex items-center gap-1.5 text-xs text-white/60">
@@ -166,7 +176,7 @@ function Bento({ profile, featured, job, degree }) {
                     <p className="mt-4 text-sm leading-snug font-semibold text-ink-900">{degree.title}</p>
                     <p className="mt-1 text-xs text-ink-500">UBT College · {degree.period.split('–').pop().trim().split('/').pop()}</p>
                 </Tile>
-            </motion.div>
+            </m.div>
         </div>
     );
 }
@@ -184,17 +194,23 @@ export default function Hero({ profile, featured, experience, education }) {
         animate: { opacity: 1, y: 0 },
         transition: { delay, duration: 0.8, ease },
     });
+    // For the largest text blocks: movement only, never hidden, so they paint straight away.
+    const rise = (delay) => ({
+        initial: { y: 16 },
+        animate: { y: 0 },
+        transition: { delay, duration: 0.8, ease },
+    });
 
     return (
         <section id="top" ref={ref} className="relative flex min-h-svh items-center overflow-hidden pt-32 pb-24">
             <div className="bg-grid mask-radial absolute inset-0 opacity-70" />
 
-            <motion.div
+            <m.div
                 style={{ y: contentY }}
                 className="relative mx-auto grid w-full max-w-6xl items-center gap-16 px-6 lg:grid-cols-[1.1fr_1fr] lg:gap-14"
             >
                 <div>
-                    <motion.div {...fade(0)} className="mb-8 flex items-center gap-3">
+                    <m.div {...fade(0)} className="mb-8 flex items-center gap-3">
                         <span className="inline-flex items-center gap-2 rounded-full border border-accent/20 bg-white/70 px-3.5 py-1.5 text-xs text-ink-700 backdrop-blur">
                             <span className="relative flex size-2">
                                 <span className="absolute inline-flex size-full animate-ping rounded-full bg-accent opacity-60" />
@@ -202,21 +218,21 @@ export default function Hero({ profile, featured, experience, education }) {
                             </span>
                             Open to new opportunities · {profile.location}
                         </span>
-                    </motion.div>
+                    </m.div>
 
                     <h1 className="text-[3.4rem] leading-[0.95] font-bold tracking-[-0.04em] sm:text-7xl lg:text-[5.25rem]">
                         <SplitWord text={first} delay={0.15} /> <SplitWord text={rest.join(' ')} delay={0.3} />
                     </h1>
 
-                    <motion.p {...fade(0.7)} className="mt-5 font-display text-2xl font-medium text-ink-800 sm:text-[1.9rem]">
+                    <m.p {...rise(0.3)} className="mt-5 font-display text-2xl font-medium text-ink-800 sm:text-[1.9rem]">
                         <RotatingRole roles={profile.roles} />
-                    </motion.p>
+                    </m.p>
 
-                    <motion.p {...fade(0.85)} className="mt-6 max-w-lg text-lg leading-relaxed text-ink-600">
+                    <m.p {...rise(0.4)} className="mt-6 max-w-lg text-lg leading-relaxed text-ink-600">
                         {profile.tagline}
-                    </motion.p>
+                    </m.p>
 
-                    <motion.div {...fade(1)} className="mt-9 flex flex-wrap items-center gap-3">
+                    <m.div {...fade(1)} className="mt-9 flex flex-wrap items-center gap-3">
                         <Magnetic>
                             <Button href="#featured">
                                 View featured project
@@ -248,11 +264,11 @@ export default function Hero({ profile, featured, experience, education }) {
                                 <LinkedinIcon />
                             </a>
                         </div>
-                    </motion.div>
+                    </m.div>
                 </div>
 
                 <Bento profile={profile} featured={featured} job={job} degree={degree} />
-            </motion.div>
+            </m.div>
         </section>
     );
 }

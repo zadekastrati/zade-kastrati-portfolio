@@ -9,10 +9,12 @@ export default defineConfig({
         laravel({
             input: ['resources/css/app.css', 'resources/js/app.jsx'],
             refresh: true,
+            // Only preload what the first screen paints (body text + the name in the hero);
+            // the other weights still load, just without competing for first render.
             fonts: [
-                bunny('Inter', { weights: [400, 500, 600] }),
-                bunny('Space Grotesk', { weights: [500, 600, 700] }),
-                bunny('JetBrains Mono', { weights: [400, 500] }),
+                bunny('Inter', { weights: [400, 500, 600], preload: [{ weight: 400 }] }),
+                bunny('Space Grotesk', { weights: [500, 600, 700], preload: [{ weight: 700 }] }),
+                bunny('JetBrains Mono', { weights: [400, 500], preload: false }),
             ],
         }),
         react(),

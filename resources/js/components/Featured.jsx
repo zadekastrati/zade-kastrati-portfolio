@@ -1,4 +1,4 @@
-import { AnimatePresence, motion, useScroll, useTransform } from 'framer-motion';
+import { AnimatePresence, m, useScroll, useTransform } from 'framer-motion';
 import { ArrowUpRight, Lock, RotateCw, ShoppingBag } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { GithubIcon, Icon } from '../lib/icons';
@@ -43,15 +43,28 @@ function BrowserMockup({ project }) {
                         <span>Activity</span>
                         <span>About</span>
                     </div>
-                    <img src={project.logo} alt="boné" className="h-4 sm:absolute sm:left-1/2 sm:-translate-x-1/2" />
+                    <img
+                        src={project.logo}
+                        alt="boné"
+                        width="43"
+                        height="16"
+                        loading="lazy"
+                        className="h-4 w-auto sm:absolute sm:left-1/2 sm:-translate-x-1/2"
+                    />
                     <ShoppingBag className="size-4 text-neutral-700" />
                 </div>
 
                 <div className="relative mx-3 aspect-video overflow-hidden rounded-xl bg-neutral-300">
                     <AnimatePresence mode="popLayout">
-                        <motion.img
+                        <m.img
                             key={images[slide].src}
                             src={images[slide].src}
+                            srcSet={`${images[slide].thumb} 480w, ${images[slide].src} 960w`}
+                            sizes="(min-width: 1024px) 540px, 90vw"
+                            width="960"
+                            height="1200"
+                            loading="lazy"
+                            decoding="async"
                             alt={images[slide].label}
                             initial={{ opacity: 0, scale: 1.08 }}
                             animate={{ opacity: 1, scale: 1 }}
@@ -83,9 +96,12 @@ function BrowserMockup({ project }) {
                         <div key={img.src} className="group/tile overflow-hidden rounded-lg">
                             <div className="aspect-4/5 overflow-hidden bg-neutral-300">
                                 <img
-                                    src={img.src}
+                                    src={img.thumb}
                                     alt={img.label}
+                                    width="480"
+                                    height="600"
                                     loading="lazy"
+                                    decoding="async"
                                     className="size-full object-cover transition-transform duration-700 group-hover/tile:scale-110"
                                 />
                             </div>
@@ -108,7 +124,7 @@ export default function Featured({ project }) {
     return (
         <section id="featured" ref={ref} className="relative px-3 py-16 sm:px-5">
             {/* Full-bleed cobalt panel: the one bold moment on an otherwise quiet page */}
-            <motion.div
+            <m.div
                 initial={{ opacity: 0, scale: 0.96 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true, margin: '-120px' }}
@@ -120,13 +136,13 @@ export default function Featured({ project }) {
                 <div className="bg-grid-light mask-radial absolute inset-0" />
 
                 {/* Giant drifting wordmark */}
-                <motion.div
+                <m.div
                     aria-hidden
                     style={{ x: wordX }}
                     className="pointer-events-none absolute top-10 left-0 font-display text-[22vw] leading-none font-bold whitespace-nowrap text-white/2.5 select-none"
                 >
                     boné · boné · boné
-                </motion.div>
+                </m.div>
 
                 <div className="relative mx-auto max-w-6xl px-6">
                     <SectionHeading
@@ -153,7 +169,7 @@ export default function Featured({ project }) {
                             </Reveal>
                             <Reveal delay={0.05}>
                                 <div className="mb-6 block w-fit rounded-2xl bg-white px-5 py-3 shadow-[0_10px_30px_-10px_rgba(28,29,33,0.5)]">
-                                    <img src={project.logo} alt="boné logo" className="h-8" />
+                                    <img src={project.logo} alt="boné logo" width="87" height="32" loading="lazy" className="h-8 w-auto" />
                                 </div>
                             </Reveal>
                             <Reveal delay={0.1}>
@@ -191,11 +207,11 @@ export default function Featured({ project }) {
                             </Reveal>
                         </div>
 
-                        <motion.div style={{ y: mockupY, rotateX: mockupRotate, transformPerspective: 1400 }}>
+                        <m.div style={{ y: mockupY, rotateX: mockupRotate, transformPerspective: 1400 }}>
                             <Reveal y={60}>
                                 <BrowserMockup project={project} />
                             </Reveal>
-                        </motion.div>
+                        </m.div>
                     </div>
 
                     {/* What went into it */}
@@ -229,7 +245,7 @@ export default function Featured({ project }) {
                         </Reveal>
                     </div>
                 </div>
-            </motion.div>
+            </m.div>
         </section>
     );
 }

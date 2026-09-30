@@ -1,4 +1,4 @@
-import { MotionConfig } from 'framer-motion';
+import { LazyMotion, MotionConfig, domAnimation } from 'framer-motion';
 import { createRoot } from 'react-dom/client';
 import About from './components/About';
 import Contact from './components/Contact';
@@ -16,22 +16,25 @@ const data = window.__PORTFOLIO__;
 
 function App() {
     return (
-        <MotionConfig reducedMotion="user">
-            <div className="noise relative overflow-x-clip">
-                <Navbar name={data.profile.name} photo={data.profile.photo} />
-                <main>
-                    <Hero profile={data.profile} featured={data.featured} experience={data.experience} education={data.education} />
-                    <TechMarquee skills={data.skills} />
-                    <About profile={data.profile} education={data.education} languages={data.languages} />
-                    <Featured project={data.featured} />
-                    <Experience items={data.experience} />
-                    <Projects projects={data.projects} github={data.profile.socials.github} />
-                    <Skills skills={data.skills} />
-                    <Contact profile={data.profile} />
-                </main>
-                <Footer profile={data.profile} />
-            </div>
-        </MotionConfig>
+        // LazyMotion + `m` components load only the animation features used (smaller bundle).
+        <LazyMotion features={domAnimation} strict>
+            <MotionConfig reducedMotion="user">
+                <div className="noise relative overflow-x-clip">
+                    <Navbar name={data.profile.name} photo={data.profile.photo} />
+                    <main>
+                        <Hero profile={data.profile} featured={data.featured} experience={data.experience} education={data.education} />
+                        <TechMarquee skills={data.skills} />
+                        <About profile={data.profile} education={data.education} languages={data.languages} />
+                        <Featured project={data.featured} />
+                        <Experience items={data.experience} />
+                        <Projects projects={data.projects} github={data.profile.socials.github} />
+                        <Skills skills={data.skills} />
+                        <Contact profile={data.profile} />
+                    </main>
+                    <Footer profile={data.profile} />
+                </div>
+            </MotionConfig>
+        </LazyMotion>
     );
 }
 

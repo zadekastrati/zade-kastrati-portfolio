@@ -26,6 +26,9 @@ export default function About({ profile, education, languages }) {
                                 <div className="flex items-center gap-5 p-5">
                                     <img
                                         src={profile.photo}
+                                        width="96"
+                                        height="96"
+                                        loading="lazy"
                                         alt={profile.name}
                                         className="size-24 shrink-0 rounded-2xl bg-subtle object-cover object-top ring-1 ring-black/6"
                                     />

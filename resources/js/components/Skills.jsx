@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { Icon } from '../lib/icons';
 import { Reveal, SectionHeading, SpotlightCard, ease } from './ui';
 
@@ -30,7 +30,7 @@ export default function Skills({ skills }) {
                                             {String(group.items.length).padStart(2, '0')}
                                         </span>
                                     </div>
-                                    <motion.ul
+                                    <m.ul
                                         className="flex flex-wrap gap-2"
                                         initial="hidden"
                                         whileInView="show"
@@ -38,7 +38,7 @@ export default function Skills({ skills }) {
                                         variants={{ show: { transition: { staggerChildren: 0.04, delayChildren: 0.15 } } }}
                                     >
                                         {group.items.map((item) => (
-                                            <motion.li
+                                            <m.li
                                                 key={item}
                                                 variants={{
                                                     hidden: { opacity: 0, scale: 0.8, y: 10 },
@@ -48,9 +48,9 @@ export default function Skills({ skills }) {
                                                 className="cursor-default rounded-xl border border-black/8 bg-subtle/80 px-4 py-2 text-sm text-ink-800 transition-colors hover:border-accent/40 hover:bg-accent/10 hover:text-ink-900"
                                             >
                                                 {item}
-                                            </motion.li>
+                                            </m.li>
                                         ))}
-                                    </motion.ul>
+                                    </m.ul>
                                 </div>
                             </SpotlightCard>
                         </Reveal>
