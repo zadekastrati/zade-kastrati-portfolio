@@ -1,0 +1,29 @@
+# Dependencies and build output are produced inside the image
+node_modules
+vendor
+public/build
+# Never ship the Vite dev-server marker: it would make the app load assets from localhost
+public/hot
+
+# Secrets and local state
+.env
+.env.*
+!.env.example
+database/*.sqlite
+database/sqlite
+storage/logs/*
+storage/framework/cache/data/*
+storage/framework/sessions/*
+storage/framework/views/*
+
+# Tooling
+.git
+.github
+.idea
+.vscode
+tests
+phpunit.xml
+.phpunit.result.cache
+Dockerfile
+compose.yaml
+.dockerignore

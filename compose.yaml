@@ -1,0 +1,24 @@
+services:
+  app:
+    build: .
+    image: zade-portfolio
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    # APP_KEY and the MAIL_* settings come from your .env file.
+    env_file: .env
+    # These override .env inside the container.
+    environment:
+      APP_ENV: production
+      APP_DEBUG: "false"
+      APP_URL: ${APP_URL_DOCKER:-http://localhost:8080}
+      LOG_CHANNEL: stderr
+      LOG_LEVEL: error
+      DB_CONNECTION: sqlite
+      DB_DATABASE: /var/www/html/database/sqlite/database.sqlite
+    volumes:
+      # SQLite database: contact messages, sessions and cache survive rebuilds
+      - database:/var/www/html/database/sqlite
+
+volumes:
+  database:
