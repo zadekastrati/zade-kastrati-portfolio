@@ -47,6 +47,31 @@ docker compose down              # stop (data is kept)
 - **Health check:** `/up`.
 - **HTTPS:** terminate TLS at your host's proxy or load balancer; the app trusts forwarded headers so generated URLs use `https://`.
 
+## Deploying to Railway
+
+Railway builds the `Dockerfile` automatically; `railway.json` sets the health check (`/up`) and restart policy.
+
+1. **New Project → Deploy from GitHub repo** and pick this repository.
+2. **Variables:** add the ones below.
+3. **Volume:** right-click the service → **Attach volume**, mount path `/var/www/html/database/sqlite`.
+4. **Settings → Networking → Generate Domain**, then set `APP_URL` to that `https://…up.railway.app` address.
+
+```env
+APP_KEY=base64:...            # from your local .env
+APP_ENV=production
+APP_DEBUG=false
+APP_URL=https://your-app.up.railway.app
+LOG_LEVEL=error
+PORT=8080
+RAILWAY_RUN_UID=0             # needed for the volume; the app itself still runs as www-data
+MAIL_MAILER=resend
+RESEND_API_KEY=re_...
+MAIL_FROM_ADDRESS=onboarding@resend.dev
+MAIL_FROM_NAME="Zade Kastrati Portfolio"
+```
+
+Railway blocks SMTP (Gmail) on the Free and Hobby plans, so email goes through [Resend](https://resend.com)'s HTTPS API. Without your own domain, Resend can only deliver to the email address you signed up with, which is all the contact form needs.
+
 ## Tests
 
 ```bash
